@@ -81,7 +81,11 @@ def delete_capital(capId):
         cap.delete_capital(capId)
         return "", 200
     except Exception as e:
-        return "Capital not found", 404
+        err = {
+                "code": 0,
+                "message": e.message
+            }                
+        return jsonify(err), 404
 
 
 # @app.route('/notes', methods=['POST', 'GET'])
