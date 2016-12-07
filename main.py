@@ -22,9 +22,9 @@ def default():
 @app.route('/api/status', methods=['GET'])
 def status():
     data = {
-             "insert": False,
+             "insert": True,
              "fetch": False,
-             "delete": False,
+             "delete": True,
              "list": True
            }
     return jsonify(data), 200
@@ -69,10 +69,10 @@ def get_by_id(capital_id):
             obj = request.get_json()
             caplist = Capitals.Capitals()
             caplist.store_capital(obj)
+            return "Capital successfully stored!", 200
         except Exception as e:
-            logging.exception("That's bad.")
-            return "Exception on server.", 500
-    return capital_id
+            return "Exception on server:" + e.message, 500
+    return "Uknown error", 500
 
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
 def delete_capital(capId):
