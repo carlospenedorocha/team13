@@ -3,9 +3,7 @@ from google.cloud import datastore
 import utility
 
 
-class Capitals(ndb.Model):
-    id = 
-
+class Capitals(object):
     """Represent a Capital in the database"""
     def __init__(self):
         self.ds = datastore.Client(project=utility.project_id())
