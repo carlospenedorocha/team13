@@ -80,8 +80,12 @@ def get_by_id(capital_id):
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
 def delete_capital(capId):
     cap = Capitals.Capitals()
-    cap.delete_capital(capId)
-    return ''
+    try:
+        cap.delete_capital(capId)
+        return "", 200
+    except Exception as e:
+        return "Capital not found", 404
+
 
 # @app.route('/notes', methods=['POST', 'GET'])
 # def access_notes():
