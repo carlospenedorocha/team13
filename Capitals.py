@@ -34,6 +34,11 @@ class Capitals(object):
             results.append(dict(entity))
         return results
 
+    def delete_capital(self, capId):
+        #key = self.ds.Key.from_path(self.kind, capId)
+        key = self.ds.key(self.kind, capId)
+        self.ds.delete(key)
+
 # def parse_note_time(note):
 #     """converts a greeting to an object"""
 #     return {

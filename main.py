@@ -22,10 +22,10 @@ def default():
 @app.route('/api/status', methods=['GET'])
 def status():
     data = {
-             "insert": "false",
-             "fetch": "false",
-             "delete": "false",
-             "list": "true"
+             "insert": False,
+             "fetch": False,
+             "delete": False,
+             "list": True
            }
     return jsonify(data), 200
 
@@ -66,7 +66,11 @@ def list_capitals():
              
         return 200
 
-
+@app.route('/api/capitals/<capId>', methods=['DELETE'])
+def delete_capital(capId):
+    cap = Capitals.Capitals()
+    cap.delete_capital(capId)
+    return ''
 
 # @app.route('/notes', methods=['POST', 'GET'])
 # def access_notes():
