@@ -9,18 +9,18 @@ class Capitals(object):
         self.ds = datastore.Client(project=utility.project_id())
         self.kind = "capitals"
 
-    def store_capital(self, id, country, name, latitude, longitude, countryCode, continent):
+    def store_capital(self, data):
         key = self.ds.key(self.kind)
         entity = datastore.Entity(key)
 
-        entity['id'] = id
-        entity['country'] = country
-        entity['name'] = name
-        entity['location'] = { 'latitude': latitude,
-                                'longitude': longitude,
+        entity['id'] = data['id']
+        entity['country'] = data['country']
+        entity['name'] = data['name']
+        entity['location'] = { 'latitude': data['location']['latitude'],
+                                'longitude': data['location']['longitude'],
                             }
-        entity['countryCode'] = countryCode
-        entity['continent'] = continent
+        entity['countryCode'] = data['countryCode']
+        entity['continent'] = data['continent']
         return self.ds.put(entity)
 
     def fetch_capitals(self):
@@ -33,7 +33,6 @@ class Capitals(object):
         for entity in list(query.fetch()):
             results.append(dict(entity))
         return results
-
 
 # def parse_note_time(note):
 #     """converts a greeting to an object"""

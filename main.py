@@ -48,13 +48,25 @@ def status():
 #     return jsonify(data), 200
 
 
-@app.route('/api/capitals', methods=['GET'])
+@app.route('/api/capitals', methods=['GET', 'PUT'])
 def list_capitals():
-    """Lists the names of capitals in the datastore"""
-    caplist = Capitals.Capitals()
+    if request.method == 'GET':
+        """Lists the names of capitals in the datastore"""
+        caplist = Capitals.Capitals()
 
-    results = caplist.fetch_capitals()
-    return jsonify(results), 200
+        results = caplist.fetch_capitals()
+        return jsonify(results), 200
+    elif request.method == 'PUT':
+        try:
+            obj = request.get_json()
+            Capitals.store_capital(obj)
+        except Exception as e:
+            logging.exception("That's bad.")
+            return
+             
+        return 200
+
+
 
 # @app.route('/notes', methods=['POST', 'GET'])
 # def access_notes():
