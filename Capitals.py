@@ -16,8 +16,9 @@ class Capitals(object):
         entity['id'] = id
         entity['country'] = country
         entity['name'] = name
-        entity['latitude'] = latitude
-        entity['longitude'] = longitude
+        entity['location'] = { 'latitude': latitude,
+                                'longitude': longitude,
+                            }
         entity['countryCode'] = countryCode
         entity['continent'] = continent
         return self.ds.put(entity)
