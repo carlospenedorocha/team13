@@ -22,9 +22,9 @@ def default():
 @app.route('/api/status', methods=['GET'])
 def status():
     data = {
-             "insert": False,
+             "insert": True,
              "fetch": False,
-             "delete": False,
+             "delete": True,
              "list": True
            }
     return jsonify(data), 200
