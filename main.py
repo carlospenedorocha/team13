@@ -75,7 +75,7 @@ def get_by_id(capital_id):
             caplist.store_capital(obj)
             return "Successfully stored the capital!", 200
         except Exception as e:
-    return "Uknown error", 500
+            return "Uknown error", 500
 
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
 def delete_capital(capId):
