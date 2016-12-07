@@ -48,23 +48,31 @@ def status():
 #     return jsonify(data), 200
 
 
-@app.route('/api/capitals', methods=['GET', 'PUT'])
+@app.route('/api/capitals', methods=['GET'])
 def list_capitals():
     if request.method == 'GET':
         """Lists the names of capitals in the datastore"""
         caplist = Capitals.Capitals()
 
         results = caplist.fetch_capitals()
-        return jsonify(results), 200
+    return jsonify(results), 200
+
+@app.route('/api/capitals/<int:capital_id>', methods=['GET', 'PUT'])
+def get_by_id(capital_id):
+    if request.method == 'GET':
+        """Returns a single capital by its unique identifier"""
+        caplist = Capitals.Capitals()
+        capital = caplist.get_capital(capital_id)
+        return jsonify(capital), 200
     elif request.method == 'PUT':
         try:
             obj = request.get_json()
-            Capitals.store_capital(obj)
+            caplist = Capitals.Capitals()
+            caplist.store_capital(obj)
         except Exception as e:
             logging.exception("That's bad.")
-            return
-             
-        return 200
+            return "Exception on server.", 500
+    return capital_id
 
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
 def delete_capital(capId):
