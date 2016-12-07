@@ -69,9 +69,10 @@ def get_by_id(capital_id):
             obj = request.get_json()
             caplist = Capitals.Capitals()
             caplist.store_capital(obj)
+            return "Capital successfully stored!", 200
         except Exception as e:
             return "Exception on server:" + e.message, 500
-    return capital_id
+    return "Uknown error", 500
 
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
 def delete_capital(capId):
