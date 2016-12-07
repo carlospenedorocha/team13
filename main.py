@@ -15,43 +15,54 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    """hello world"""
-    return 'Hello World!'
+def default():
+    """Capital Idea!"""
+    return 'Capital Idea!'
 
-@app.route('/pubsub/receive', methods=['POST'])
-def pubsub_receive():
-    """dumps a received pubsub message to the log"""
-
-    data = {}
-    try:
-        obj = request.get_json()
-        utility.log_info(json.dumps(obj))
-
-        data = base64.b64decode(obj['message']['data'])
-        utility.log_info(data)
-
-    except Exception as e:
-        # swallow up exceptions
-        logging.exception('Oops!')
-
+@app.route('/api/status', methods=['GET'])
+def status():
+    data = {
+             "insert": "false",
+             "fetch": "false",
+             "delete": "false",
+             "list": "false"
+           }
     return jsonify(data), 200
 
 
-@app.route('/notes', methods=['POST', 'GET'])
-def access_notes():
-    """inserts and retrieves notes from datastore"""
+# @app.route('/api/capitals/<id>', methods=['POST'])
+# def pubsub_receive():
+#     """dumps a received pubsub message to the log"""
 
-    book = notebook.NoteBook()
-    if request.method == 'GET':
-        results = book.fetch_notes()
-        result = [notebook.parse_note_time(obj) for obj in results]
-        return jsonify(result)
-    elif request.method == 'POST':
-        print json.dumps(request.get_json())
-        text = request.get_json()['text']
-        book.store_note(text)
-        return "done"
+#     data = {}
+#     try:
+#         obj = request.get_json()
+#         utility.log_info(json.dumps(obj))
+
+#         data = base64.b64decode(obj['message']['data'])
+#         utility.log_info(data)
+
+#     except Exception as e:
+#         # swallow up exceptions
+#         logging.exception('Oops!')
+
+#     return jsonify(data), 200
+
+
+# @app.route('/notes', methods=['POST', 'GET'])
+# def access_notes():
+#     """inserts and retrieves notes from datastore"""
+
+#     book = notebook.NoteBook()
+#     if request.method == 'GET':
+#         results = book.fetch_notes()
+#         result = [notebook.parse_note_time(obj) for obj in results]
+#         return jsonify(result)
+#     elif request.method == 'POST':
+#         print json.dumps(request.get_json())
+#         text = request.get_json()['text']
+#         book.store_note(text)
+#         return "done"
 
 
 @app.errorhandler(500)
