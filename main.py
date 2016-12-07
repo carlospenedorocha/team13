@@ -23,7 +23,7 @@ def default():
 def status():
     data = {
              "insert": True,
-             "fetch": False,
+             "fetch": True,
              "delete": True,
              "list": True
            }

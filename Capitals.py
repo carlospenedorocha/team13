@@ -39,10 +39,9 @@ class Capitals(object):
         key = self.ds.key(self.kind, capId)
         self.ds.delete(key)
 
-    def get_capital(self, capital_id):
+    def get_capital(self, capital_id): 
         query = self.ds.query(kind=self.kind)
-        query.order = ['id']
-        query.filter("id =",str(capital_id))
+        query.add_filter('id', '=', capital_id)
         return self.get_query_results(query)
 
 # def parse_note_time(note):
