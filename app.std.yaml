@@ -2,7 +2,7 @@
 runtime: python27
 api_version: 1
 threadsafe: true
-service: talk-demo
+service: team13
 
 handlers:
 - url: /.*
