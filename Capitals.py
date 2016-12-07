@@ -10,7 +10,7 @@ class Capitals(object):
         self.kind = "capitals"
 
     def store_capital(self, data):
-        key = self.ds.key(self.kind)
+        key =data['id']
         entity = datastore.Entity(key)
 
         entity['id'] = data['id']
