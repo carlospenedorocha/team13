@@ -29,7 +29,6 @@ def status():
            }
     return jsonify(data), 200
 
-
 # @app.route('/api/capitals/<id>', methods=['POST'])
 # def pubsub_receive():
 #     """dumps a received pubsub message to the log"""
