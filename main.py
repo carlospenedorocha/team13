@@ -70,8 +70,7 @@ def get_by_id(capital_id):
             caplist = Capitals.Capitals()
             caplist.store_capital(obj)
         except Exception as e:
-            logging.exception("That's bad.")
-            return "Exception on server.", 500
+            return "Exception on server:" + e.message, 500
     return capital_id
 
 @app.route('/api/capitals/<capId>', methods=['DELETE'])
