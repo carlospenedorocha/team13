@@ -7,7 +7,7 @@ import base64
 from flask import Flask, request
 from flask import jsonify
 
-import notebook
+import Capitals
 import utility
 
 
@@ -25,7 +25,7 @@ def status():
              "insert": "false",
              "fetch": "false",
              "delete": "false",
-             "list": "false"
+             "list": "true"
            }
     return jsonify(data), 200
 
@@ -47,6 +47,14 @@ def status():
 
 #     return jsonify(data), 200
 
+
+@app.route('/api/capitals', methods=['GET'])
+def list_capitals():
+    """Lists the names of capitals in the datastore"""
+    caplist = Capitals.Capitals()
+
+    results = caplist.fetch_capitals()
+    return jsonify(results), 200
 
 # @app.route('/notes', methods=['POST', 'GET'])
 # def access_notes():
