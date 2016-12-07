@@ -39,11 +39,12 @@ class Capitals(object):
         key = self.ds.key(self.kind, capId)
         self.ds.delete(key)
 
-    def get_capital(self, capital_id):
+    def get_capital(self, capital_id): 
         query = self.ds.query(kind=self.kind)
-        query.order = ['id']
-        query.filter("id =",str(capital_id))
-        return self.get_query_results(query)
+        query.add_filter('id', '=', str(capital_id))
+        for capital in query.fetch():
+            return capital
+        return False
 
 # def parse_note_time(note):
 #     """converts a greeting to an object"""
