@@ -79,9 +79,6 @@ class Capitals(object):
 
         topic = pubsub_client.topic(topicName)
 
-        # Data must be a bytestring
-        encData = base64.b64encode(data)
-
-        message_id = topic.publish(encData)
+        message_id = topic.publish(data)
 
         return message_id
