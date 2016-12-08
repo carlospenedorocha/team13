@@ -138,7 +138,7 @@ def pubsub_publish(capId):
 
         message_id = cap.publish_message(obj['topic'], str(capital[0]))
         response = {
-                "messageId": str(message_id)
+                "messageId": int(message_id)
             }                
         return jsonify(response), 200
         
