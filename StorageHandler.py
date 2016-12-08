@@ -23,7 +23,7 @@ class StorageHandler:
             print 'Error: Forbidden, Access denied for bucket {}'.format(bucket_name)
             return None
 
-# Adds a capital to the bucket
+    # Adds a capital to the bucket
     def add_to_bucket(self, bucket_name, capital_id, item):
         #itemid = str(item['id'])
 
@@ -33,7 +33,7 @@ class StorageHandler:
         if bucket_exists is not None and not bucket_exists:
             self.create_bucket(bucket_name)
 
-        self.store_file_to_gcs(bucket_name, capital_id + ".json")
+        self.store_file_to_gcs(bucket_name, str(capital_id) + ".json")
         return True
 
     def create_bucket(self, bucket_name):
