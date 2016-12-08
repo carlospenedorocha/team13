@@ -81,5 +81,7 @@ class Capitals(object):
 
         # Data must be a bytestring
         encData = base64.b64encode(data)
+
         message_id = topic.publish(encData)
+
         return message_id
