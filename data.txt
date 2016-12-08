@@ -1,1 +1,0 @@
-{"name": "Port-aux-Franais", "countryCode": "TF", "location": {"latitude": -49.35, "longitude": 70.216667}, "country": "French Southern and Antarctic Lands", "continent": "Antarctica", "id": 111}
