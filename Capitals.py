@@ -43,6 +43,18 @@ class Capitals(object):
         query.add_filter('id', '=', capital_id)
         return self.get_query_results(query)
 
+    def publish_message(topic_name, data):
+        """Publishes a message to a Pub/Sub topic with the given data."""
+        pubsub_client = pubsub.Client()
+        topic = pubsub_client.topic(topic_name)
+
+        # Data must be a bytestring
+        data = data.encode('utf-8')
+
+        message_id = topic.publish(data)
+
+        print('Message {} published.'.format(message_id))
+
 # def parse_note_time(note):
 #     """converts a greeting to an object"""
 #     return {
