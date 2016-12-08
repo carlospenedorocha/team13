@@ -27,7 +27,7 @@ def status():
              "fetch": True,
              "delete": True,
              "list": True,
-             "query" : False,
+             "query" : True,
              "search" : False,
              "pubsub" : False,
              "storage" : False,
@@ -56,11 +56,26 @@ def status():
 @app.route('/api/capitals', methods=['GET'])
 def list_capitals():
     if request.method == 'GET':
-        """Lists the names of capitals in the datastore"""
-        caplist = Capitals.Capitals()
+        if 'query' in request.args:
+            utility.log_info("Query received as: %s" % request.args['query'])
+            return queryDatabase(request.args['query'])
+        else:
+            """Lists the names of capitals in the datastore"""
+            caplist = Capitals.Capitals()
 
-        results = caplist.fetch_capitals()
+            results = caplist.fetch_capitals()
     return jsonify(results), 200
+
+def queryDatabase(query):
+    capital = Capitals.Capitals()
+    response = capital.get_capital_via_query(query)
+    if not response:
+        err = {
+            "code": 404,
+                "message": "Cannot fetch capital. Capital does not exist"
+        }                
+        return jsonify(err), 404
+    return jsonify(response), 200
 
 @app.route('/api/capitals/<int:capital_id>', methods=['GET', 'PUT'])
 def get_by_id(capital_id):
