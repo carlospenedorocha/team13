@@ -77,18 +77,27 @@ def get_by_id(capital_id):
         except Exception as e:
             return "Uknown error", 500
 
-@app.route('/api/capitals/<capId>', methods=['DELETE'])
+@app.route('/api/capitals/<int:capId>', methods=['DELETE'])
 def delete_capital(capId):
     cap = Capitals.Capitals()
     try:
-        cap.delete_capital(capId)
+        capital = cap.get_capital(capId)
+        if not capital:
+            err = {
+                    "code": 404,
+                    "message": "Cannot delete capital. Capital does not exist"
+                }                
+            return jsonify(err), 404
+
+        cap.delete_capital(str(capId))
         return "", 200
+        
     except Exception as e:
         err = {
-                "code": 0,
+                "code": 500,
                 "message": e.message
             }                
-        return jsonify(err), 404
+        return jsonify(err), 500
 
 
 # @app.route('/notes', methods=['POST', 'GET'])
