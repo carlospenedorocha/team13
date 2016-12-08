@@ -30,7 +30,7 @@ class Capitals(object):
 
     def get_query_results(self, query):
         results = list()
-        for entity in list(query.fetch()):
+        for entity in list(query.fetch(limit=20)):
             results.append(dict(entity))
         return results
 
