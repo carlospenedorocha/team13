@@ -29,29 +29,10 @@ def status():
              "list": True,
              "query" : True,
              "search" : True,
-             "pubsub" : False,
+             "pubsub" : True,
              "storage" : False,
            }
     return jsonify(data), 200
-
-# @app.route('/api/capitals/<id>', methods=['POST'])
-# def pubsub_receive():
-#     """dumps a received pubsub message to the log"""
-
-#     data = {}
-#     try:
-#         obj = request.get_json()
-#         utility.log_info(json.dumps(obj))
-
-#         data = base64.b64decode(obj['message']['data'])
-#         utility.log_info(data)
-
-#     except Exception as e:
-#         # swallow up exceptions
-#         logging.exception('Oops!')
-
-#     return jsonify(data), 200
-
 
 @app.route('/api/capitals', methods=['GET'])
 def list_capitals():
@@ -164,8 +145,11 @@ def pubsub_publish(capId):
         utility.log_info(obj)
         utility.log_info(request)
 
-        cap.publish_message(obj['topic'], str(capital[0]))
-        return "", 200
+        message_id = cap.publish_message(obj['topic'], str(capital[0]))
+        response = {
+                "messageId": str(message_id)
+            }                
+        return jsonify(response), 200
         
     except Exception as e:
         err = {
@@ -173,8 +157,6 @@ def pubsub_publish(capId):
                 "message": str(e)
             }                
         return jsonify(err), 500
-
-    return jsonify(data), 200
 
 @app.route('/api/capitals/<int:capital_id>/store', methods=['POST'])
 def store_capital_by_id(capital_id):

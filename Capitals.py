@@ -66,6 +66,8 @@ class Capitals(object):
 
         print('Message {} published.'.format(message_id))
 
+        return message_id
+
 # def parse_note_time(note):
 #     """converts a greeting to an object"""
 #     return {
