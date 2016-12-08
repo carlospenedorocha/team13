@@ -28,7 +28,7 @@ def status():
              "delete": True,
              "list": True,
              "query" : True,
-             "search" : False,
+             "search" : True,
              "pubsub" : False,
              "storage" : False,
            }
@@ -59,6 +59,9 @@ def list_capitals():
         if 'query' in request.args:
             utility.log_info("Query received as: %s" % request.args['query'])
             return queryDatabase(request.args['query'])
+        elif 'search' in request.args:
+            utility.log_info("Search received as: %s" % request.args['search'])
+            return searchDatabase(request.args['search'])
         else:
             """Lists the names of capitals in the datastore"""
             caplist = Capitals.Capitals()
@@ -66,6 +69,17 @@ def list_capitals():
             results = caplist.fetch_capitals()
     return jsonify(results), 200
 
+def searchDatabase(search):
+    capital = Capitals.Capitals()
+    response = capital.get_capital_via_search(search)
+    if not response:
+        err = {
+            "code": 404,
+                "message": "Cannot fetch capital. Capital does not exist"
+        }                
+        return jsonify(err), 404
+    return jsonify(response), 200
+    
 def queryDatabase(query):
     capital = Capitals.Capitals()
     response = capital.get_capital_via_query(query)
