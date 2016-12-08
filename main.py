@@ -139,19 +139,18 @@ def pubsub_publish(capId):
 
     return jsonify(data), 200
 
-@app.route('/api/capitals/<int:cap_id>/store', methods=['POST'])
-def store_capital_by_id(cap_id):
-    """This method stores a capital to a file storage bucket by the capital's identifier.'"""
+@app.route('/api/capitals/<int:capital_id>/store', methods=['POST'])
+def store_capital_by_id(capital_id):
+    """This method stores a capital to a file storage bucket by the capital's identifier."""
     try:
         caplist = Capitals.Capitals()
-        capital = caplist.get_capital(cap_id)
-
+        capital = caplist.get_capital(capital_id)
         if not capital:
-            err = {"code": 404, "message": "Capital record not found"}
+            err = {"code": 404, "message": "Cannot fetch capital. Capital does not exist"}
             return jsonify(err), 404
 
         # Call file storage method
-        success_message = {'messageId' : cap_id}
+        success_message = {'messageId' : capital_id}
 
         return jsonify(success_message), 200
     except Exception as e:
