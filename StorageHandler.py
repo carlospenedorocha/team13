@@ -1,5 +1,6 @@
 import utility
 import json
+import io
 #import cloudstorage
 
 from google.cloud import storage, exceptions
@@ -51,20 +52,16 @@ class StorageHandler:
     def store_file_to_gcs(self, bucket_name, filename, item):
 
         if self.check_bucket(bucket_name):
-            # bucket = self.gcs.get_bucket(bucket_name)
-            filepath = "/" + bucket_name + "/" + filename
-            print 'Got bucket ' + str(filepath)
-            with open(filepath, 'w') as outfile:
-                outfile.write(unicode(json.dumps(item, ensure_ascii=False)))
-            print 'wrote json'
-            close(filepath)
-          
-            try:
-                self.gcs.open(filepath, 'r')
-                return True
-            except IOError:
-                print 'Error: Cannot open the file {}'.format(filepath)
-        return False
+            bucket = self.gcs.get_bucket(bucket_name)
+            blob = bucket.blob(filename)
+            blob.upload_from_string(str(item))
+
+            # try:
+            #     self.gcs.open(filepath, 'r')
+            #     return True
+            # except IOError:
+            #     print 'Error: Cannot open the file {}'.format(filepath)
+        return True
 
     def list_objects(self, bucket_name):
 

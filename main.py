@@ -30,7 +30,7 @@ def status():
              "query" : True,
              "search" : True,
              "pubsub" : True,
-             "storage" : False,
+             "storage" : True,
            }
     return jsonify(data), 200
 
