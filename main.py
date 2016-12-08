@@ -26,7 +26,11 @@ def status():
              "insert": True,
              "fetch": True,
              "delete": True,
-             "list": True
+             "list": True,
+             "query" : False,
+             "search" : False,
+             "pubsub" : False,
+             "storage" : False,
            }
     return jsonify(data), 200
 
@@ -100,7 +104,7 @@ def delete_capital(capId):
     except Exception as e:
         err = {
                 "code": 500,
-                "message": e.message
+                "message": str(e)
             }                
         return jsonify(err), 500
 
@@ -119,24 +123,27 @@ def pubsub_publish(capId):
             return jsonify(err), 404
 
         obj = request.get_json()
-        utility.log_info(json.dumps(obj))
+        
+        #utility.log_info(json.dumps(obj))
 
-        data = base64.b64decode(obj['message']['data'])
-        utility.log_info(data)
+        #data = base64.b64decode(obj['topic'])
+        
+        #print "my data is: %s" % data
+        #print "my topic is: %s" % data['topic']
 
-        cap.publish_message(data["topic"], capital)
+        #utility.log_info(data)
+        utility.log_info(obj)
+        utility.log_info(request)
+
+        cap.publish_message(obj['topic'], str(capital[0]))
         return "", 200
         
     except Exception as e:
         err = {
                 "code": 500,
-                "message": e.message
+                "message": str(e)
             }                
         return jsonify(err), 500
-
-    except Exception as e:
-        # swallow up exceptions
-        logging.exception('Oops!')
 
     return jsonify(data), 200
 

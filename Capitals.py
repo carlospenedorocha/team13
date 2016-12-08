@@ -1,7 +1,7 @@
 from datetime import datetime
-from google.cloud import datastore
+from google.cloud import datastore, pubsub
 import utility
-
+import base64
 
 class Capitals(object):
     """Represent a Capital in the database"""
@@ -43,15 +43,15 @@ class Capitals(object):
         query.add_filter('id', '=', capital_id)
         return self.get_query_results(query)
 
-    def publish_message(topic_name, data):
+    def publish_message(self, topic_name, data):
         """Publishes a message to a Pub/Sub topic with the given data."""
         pubsub_client = pubsub.Client()
         topic = pubsub_client.topic(topic_name)
 
         # Data must be a bytestring
-        data = data.encode('utf-8')
+        encData = base64.b64encode(data)
 
-        message_id = topic.publish(data)
+        message_id = topic.publish(encData)
 
         print('Message {} published.'.format(message_id))
 
