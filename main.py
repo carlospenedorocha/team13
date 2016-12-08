@@ -9,6 +9,7 @@ from flask import jsonify
 
 import Capitals
 import utility
+import StorageHandler
 
 
 app = Flask(__name__)
@@ -150,6 +151,9 @@ def store_capital_by_id(capital_id):
             return jsonify(err), 404
 
         # Call file storage method
+        obj = request.get_json()
+        storage = StorageHandler.StorageHandler()
+        storage.add_to_bucket(obj['bucket'], capital_id, capital[0])
         success_message = {'messageId' : capital_id}
 
         return jsonify(success_message), 200
