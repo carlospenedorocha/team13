@@ -139,16 +139,7 @@ def pubsub_publish(capId):
 
         obj = request.get_json()
         
-        #utility.log_info(json.dumps(obj))
-
-        #data = base64.b64decode(obj['topic'])
-        
-        #print "my data is: %s" % data
-        #print "my topic is: %s" % data['topic']
-
-        #utility.log_info(data)
-        utility.log_info(obj)
-        utility.log_info(request)
+        utility.log_info(obj['topic'])
 
         message_id = cap.publish_message(obj['topic'], str(capital[0]))
         response = {
