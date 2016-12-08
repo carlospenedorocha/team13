@@ -136,7 +136,7 @@ def pubsub_publish(capId):
         
         utility.log_info(obj['topic'])
 
-        recordStr = jsonify(capital[0])
+        recordStr = json.dumps(capital[0])
 
         utility.log_info(recordStr)
 
