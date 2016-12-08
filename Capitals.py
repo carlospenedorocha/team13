@@ -43,7 +43,21 @@ class Capitals(object):
     def get_capital_via_search(self, searchString):
         query = self.ds.query(kind=self.kind)
         query.add_filter('country', '=', searchString)
-        return self.get_query_results(query)
+        query2 = self.ds.query(kind=self.kind)
+        query2.add_filter('id', '=', searchString)
+        query3 = self.ds.query(kind=self.kind)
+        query3.add_filter('name', '=', searchString)
+        query4 = self.ds.query(kind=self.kind)
+        query4.add_filter('countryCode', '=', searchString)
+        query5 = self.ds.query(kind=self.kind)
+        query5.add_filter('continent', '=', searchString)
+        response = list()
+        response.extend(self.get_query_results(query))
+        response.extend(self.get_query_results(query2))
+        response.extend(self.get_query_results(query3))
+        response.extend(self.get_query_results(query4))
+        response.extend(self.get_query_results(query5))
+        return response
 
     def delete_capital(self, capId):
         key = self.ds.key(self.kind, capId)
