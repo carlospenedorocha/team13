@@ -40,6 +40,11 @@ class Capitals(object):
         query.add_filter(myquery[0], '=', myquery[1])
         return self.get_query_results(query)
 
+    def get_capital_via_search(self, searchString):
+        query = self.ds.query(kind=self.kind)
+        query.add_filter('country', '=', searchString)
+        return self.get_query_results(query)
+
     def delete_capital(self, capId):
         key = self.ds.key(self.kind, capId)
         self.ds.delete(key)

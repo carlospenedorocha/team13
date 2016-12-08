@@ -28,30 +28,11 @@ def status():
              "delete": True,
              "list": True,
              "query" : True,
-             "search" : False,
+             "search" : True,
              "pubsub" : True,
              "storage" : False,
            }
     return jsonify(data), 200
-
-# @app.route('/api/capitals/<id>', methods=['POST'])
-# def pubsub_receive():
-#     """dumps a received pubsub message to the log"""
-
-#     data = {}
-#     try:
-#         obj = request.get_json()
-#         utility.log_info(json.dumps(obj))
-
-#         data = base64.b64decode(obj['message']['data'])
-#         utility.log_info(data)
-
-#     except Exception as e:
-#         # swallow up exceptions
-#         logging.exception('Oops!')
-
-#     return jsonify(data), 200
-
 
 @app.route('/api/capitals', methods=['GET'])
 def list_capitals():
@@ -59,6 +40,9 @@ def list_capitals():
         if 'query' in request.args:
             utility.log_info("Query received as: %s" % request.args['query'])
             return queryDatabase(request.args['query'])
+        elif 'search' in request.args:
+            utility.log_info("Search received as: %s" % request.args['search'])
+            return searchDatabase(request.args['search'])
         else:
             """Lists the names of capitals in the datastore"""
             caplist = Capitals.Capitals()
@@ -66,6 +50,17 @@ def list_capitals():
             results = caplist.fetch_capitals()
     return jsonify(results), 200
 
+def searchDatabase(search):
+    capital = Capitals.Capitals()
+    response = capital.get_capital_via_search(search)
+    if not response:
+        err = {
+            "code": 404,
+                "message": "Cannot fetch capital. Capital does not exist"
+        }                
+        return jsonify(err), 404
+    return jsonify(response), 200
+    
 def queryDatabase(query):
     capital = Capitals.Capitals()
     response = capital.get_capital_via_query(query)
