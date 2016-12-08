@@ -53,14 +53,14 @@ class StorageHandler:
         if self.check_bucket(bucket_name):
             # bucket = self.gcs.get_bucket(bucket_name)
             filepath = "/" + bucket_name + "/" + filename
-            print 'Got bucket' + str(filepath)
-            with self.gcs.open(filepath, 'w', encoding='utf-8') as outfile:
+            print 'Got bucket ' + str(filepath)
+            with open(filepath, 'w') as outfile:
                 outfile.write(unicode(json.dumps(item, ensure_ascii=False)))
-            self.gcs.close(filepath)
             print 'wrote json'
+            close(filepath)
+          
             try:
                 self.gcs.open(filepath, 'r')
-                # blob.upload_from_file(input_file)
                 return True
             except IOError:
                 print 'Error: Cannot open the file {}'.format(filepath)
