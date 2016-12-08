@@ -83,6 +83,22 @@ def delete_capital(capId):
     except Exception as e:
         return "Capital not found", 404
 
+@app.route('/api/capitals/<cap_id>/store', methods=['POST'])
+def store_capital_by_id(cap_id):
+    """This method stores a capital to a file storage bucket by the capital's identifier.'"""
+    try:
+        caplist = Capitals.Capitals()
+        capital = caplist.get_capital(cap_id)
+
+        if not capital:
+            return "Capital record not found", 404
+
+        # Call file storage method
+        success_message = {'messageId' : cap_id}
+
+        return jsonify(success_message), 200
+    except Exception as e:
+        return e.message, 500
 
 # @app.route('/notes', methods=['POST', 'GET'])
 # def access_notes():
