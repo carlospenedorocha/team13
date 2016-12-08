@@ -70,8 +70,14 @@ class Capitals(object):
 
     def publish_message(self, topic_name, data):
         """Publishes a message to a Pub/Sub topic with the given data."""
-        pubsub_client = pubsub.Client()
-        topic = pubsub_client.topic(topic_name)
+
+        splitTopic = topic_name.split('/')
+        projectName = splitTopic[1]
+        topicName = splitTopic[3]
+
+        pubsub_client = pubsub.Client(project=projectName)
+
+        topic = pubsub_client.topic(topicName)
 
         # Data must be a bytestring
         encData = base64.b64encode(data)
