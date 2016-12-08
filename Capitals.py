@@ -34,6 +34,17 @@ class Capitals(object):
             results.append(dict(entity))
         return results
 
+    def get_capital_via_query(self, queryString):
+        myquery = queryString.split(':')
+        query = self.ds.query(kind=self.kind)
+        query.add_filter(myquery[0], '=', myquery[1])
+        return self.get_query_results(query)
+
+    def get_capital_via_search(self, searchString):
+        query = self.ds.query(kind=self.kind)
+        query.add_filter('country', '=', searchString)
+        return self.get_query_results(query)
+
     def delete_capital(self, capId):
         key = self.ds.key(self.kind, capId)
         self.ds.delete(key)
@@ -54,6 +65,8 @@ class Capitals(object):
         message_id = topic.publish(encData)
 
         print('Message {} published.'.format(message_id))
+
+        return message_id
 
 # def parse_note_time(note):
 #     """converts a greeting to an object"""

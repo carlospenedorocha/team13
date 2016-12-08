@@ -27,40 +27,50 @@ def status():
              "fetch": True,
              "delete": True,
              "list": True,
-             "query" : False,
-             "search" : False,
-             "pubsub" : False,
+             "query" : True,
+             "search" : True,
+             "pubsub" : True,
              "storage" : False,
            }
     return jsonify(data), 200
 
-# @app.route('/api/capitals/<id>', methods=['POST'])
-# def pubsub_receive():
-#     """dumps a received pubsub message to the log"""
-
-#     data = {}
-#     try:
-#         obj = request.get_json()
-#         utility.log_info(json.dumps(obj))
-
-#         data = base64.b64decode(obj['message']['data'])
-#         utility.log_info(data)
-
-#     except Exception as e:
-#         # swallow up exceptions
-#         logging.exception('Oops!')
-
-#     return jsonify(data), 200
-
-
 @app.route('/api/capitals', methods=['GET'])
 def list_capitals():
     if request.method == 'GET':
-        """Lists the names of capitals in the datastore"""
-        caplist = Capitals.Capitals()
+        if 'query' in request.args:
+            utility.log_info("Query received as: %s" % request.args['query'])
+            return queryDatabase(request.args['query'])
+        elif 'search' in request.args:
+            utility.log_info("Search received as: %s" % request.args['search'])
+            return searchDatabase(request.args['search'])
+        else:
+            """Lists the names of capitals in the datastore"""
+            caplist = Capitals.Capitals()
 
-        results = caplist.fetch_capitals()
+            results = caplist.fetch_capitals()
     return jsonify(results), 200
+
+def searchDatabase(search):
+    capital = Capitals.Capitals()
+    response = capital.get_capital_via_search(search)
+    if not response:
+        err = {
+            "code": 404,
+                "message": "Cannot fetch capital. Capital does not exist"
+        }                
+        return jsonify(err), 404
+    return jsonify(response), 200
+    
+def queryDatabase(query):
+    capital = Capitals.Capitals()
+    response = capital.get_capital_via_query(query)
+    if not response:
+        err = {
+            "code": 404,
+                "message": "Cannot fetch capital. Capital does not exist"
+        }                
+        return jsonify(err), 404
+    return jsonify(response), 200
 
 @app.route('/api/capitals/<int:capital_id>', methods=['GET', 'PUT'])
 def get_by_id(capital_id):
@@ -124,19 +134,13 @@ def pubsub_publish(capId):
 
         obj = request.get_json()
         
-        #utility.log_info(json.dumps(obj))
+        utility.log_info(obj['topic'])
 
-        #data = base64.b64decode(obj['topic'])
-        
-        #print "my data is: %s" % data
-        #print "my topic is: %s" % data['topic']
-
-        #utility.log_info(data)
-        utility.log_info(obj)
-        utility.log_info(request)
-
-        cap.publish_message(obj['topic'], str(capital[0]))
-        return "", 200
+        message_id = cap.publish_message(obj['topic'], str(capital[0]))
+        response = {
+                "messageId": int(message_id)
+            }                
+        return jsonify(response), 200
         
     except Exception as e:
         err = {
@@ -144,8 +148,6 @@ def pubsub_publish(capId):
                 "message": str(e)
             }                
         return jsonify(err), 500
-
-    return jsonify(data), 200
 
 @app.route('/api/capitals/<int:capital_id>/store', methods=['POST'])
 def store_capital_by_id(capital_id):
