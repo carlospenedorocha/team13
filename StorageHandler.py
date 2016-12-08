@@ -56,7 +56,7 @@ class StorageHandler:
             bucket = self.gcs.get_bucket(bucket_name)
             blob = bucket.blob(filename)
             utility.log_info('jsonifying data')
-            data = json.loads(str(item))
+            data = json.dumps(item)
             utility.log_info('uploading data')
             blob.upload_from_string(data)
 
