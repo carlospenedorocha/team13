@@ -1,7 +1,8 @@
 import utility
 import json
 import io
-#import cloudstorage
+from flask import Flask
+from flask import jsonify
 
 from google.cloud import storage, exceptions
 # from google.cloud.storage import Blob
@@ -54,7 +55,10 @@ class StorageHandler:
         if self.check_bucket(bucket_name):
             bucket = self.gcs.get_bucket(bucket_name)
             blob = bucket.blob(filename)
-            blob.upload_from_string(str(item))
+            utility.log_info('jsonifying data')
+            data = json.loads(str(item))
+            utility.log_info('uploading data')
+            blob.upload_from_string(data)
 
             # try:
             #     self.gcs.open(filepath, 'r')
