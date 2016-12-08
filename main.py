@@ -65,7 +65,11 @@ def get_by_id(capital_id):
         caplist = Capitals.Capitals()
         capital = caplist.get_capital(capital_id)
         if not capital:
-            return "Capital not found", 404
+            err = {
+                    "code": 404,
+                    "message": "Cannot fetch capital. Capital does not exist"
+                }                
+            return jsonify(err), 404
         return jsonify(capital), 200
            
     elif request.method == 'PUT':
