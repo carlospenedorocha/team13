@@ -146,7 +146,7 @@ def store_capital_by_id(capital_id):
         caplist = Capitals.Capitals()
         capital = caplist.get_capital(capital_id)
         if not capital:
-            err = {"code": 404, "message": "Cannot fetch capital. Capital does not exist"}
+            err = {"code": 404, "message": "Capital record not found"}
             return jsonify(err), 404
 
         # Call file storage method
