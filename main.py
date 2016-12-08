@@ -136,7 +136,11 @@ def pubsub_publish(capId):
         
         utility.log_info(obj['topic'])
 
-        message_id = cap.publish_message(obj['topic'], str(capital[0]))
+        recordStr = str(capital[0])
+
+        utility.log_info(recordStr)
+
+        message_id = cap.publish_message(obj['topic'], jsonify(recordStr))
         response = {
                 "messageId": int(message_id)
             }                

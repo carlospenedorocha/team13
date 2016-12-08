@@ -81,16 +81,5 @@ class Capitals(object):
 
         # Data must be a bytestring
         encData = base64.b64encode(data)
-
         message_id = topic.publish(encData)
-
-        print('Message {} published.'.format(message_id))
-
         return message_id
-
-# def parse_note_time(note):
-#     """converts a greeting to an object"""
-#     return {
-#         'text': note['text'],
-#         'timestamp': note['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
-#     }
