@@ -70,7 +70,7 @@ def get_by_id(capital_id):
                     "message": "Cannot fetch capital. Capital does not exist"
                 }                
             return jsonify(err), 404
-        return jsonify(capital), 200
+        return jsonify(capital[0]), 200
            
     elif request.method == 'PUT':
         try:
