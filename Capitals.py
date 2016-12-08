@@ -35,7 +35,6 @@ class Capitals(object):
         return results
 
     def delete_capital(self, capId):
-        #key = self.ds.Key.from_path(self.kind, capId)
         key = self.ds.key(self.kind, capId)
         self.ds.delete(key)
 

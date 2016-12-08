@@ -59,29 +59,49 @@ def list_capitals():
 
 @app.route('/api/capitals/<int:capital_id>', methods=['GET', 'PUT'])
 def get_by_id(capital_id):
+    
     if request.method == 'GET':
         """Returns a single capital by its unique identifier"""
         caplist = Capitals.Capitals()
         capital = caplist.get_capital(capital_id)
-        return jsonify(capital), 200
+        if not capital:
+            err = {
+                    "code": 404,
+                    "message": "Cannot fetch capital. Capital does not exist"
+                }                
+            return jsonify(err), 404
+        return jsonify(capital[0]), 200
+           
     elif request.method == 'PUT':
         try:
             obj = request.get_json()
             caplist = Capitals.Capitals()
             caplist.store_capital(obj)
-            return "Capital successfully stored!", 200
+            return "Successfully stored the capital!", 200
         except Exception as e:
-            return "Exception on server:" + e.message, 500
-    return "Uknown error", 500
+            return "Uknown error", 500
 
-@app.route('/api/capitals/<capId>', methods=['DELETE'])
+@app.route('/api/capitals/<int:capId>', methods=['DELETE'])
 def delete_capital(capId):
     cap = Capitals.Capitals()
     try:
-        cap.delete_capital(capId)
+        capital = cap.get_capital(capId)
+        if not capital:
+            err = {
+                    "code": 404,
+                    "message": "Cannot delete capital. Capital does not exist"
+                }                
+            return jsonify(err), 404
+
+        cap.delete_capital(str(capId))
         return "", 200
+        
     except Exception as e:
-        return "Capital not found", 404
+        err = {
+                "code": 500,
+                "message": e.message
+            }                
+        return jsonify(err), 500
 
 @app.route('/api/capitals/<cap_id>/store', methods=['POST'])
 def store_capital_by_id(cap_id):
