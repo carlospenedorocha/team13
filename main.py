@@ -133,36 +133,28 @@ def pubsub_publish(capId):
             }                
         return jsonify(err), 500
 
-
-
-
-        # obj = request.get_json()
-        # utility.log_info(json.dumps(obj))
-
-        # data = base64.b64decode(obj['message']['data'])
-        # utility.log_info(data)
-
     except Exception as e:
         # swallow up exceptions
         logging.exception('Oops!')
 
     return jsonify(data), 200
 
-# @app.route('/notes', methods=['POST', 'GET'])
-# def access_notes():
-#     """inserts and retrieves notes from datastore"""
+@app.route('/api/capitals/<cap_id>/store', methods=['POST'])
+def store_capital_by_id(cap_id):
+    """This method stores a capital to a file storage bucket by the capital's identifier.'"""
+    try:
+        caplist = Capitals.Capitals()
+        capital = caplist.get_capital(cap_id)
 
-#     book = notebook.NoteBook()
-#     if request.method == 'GET':
-#         results = book.fetch_notes()
-#         result = [notebook.parse_note_time(obj) for obj in results]
-#         return jsonify(result)
-#     elif request.method == 'POST':
-#         print json.dumps(request.get_json())
-#         text = request.get_json()['text']
-#         book.store_note(text)
-#         return "done"
+        if not capital:
+            return "Capital record not found", 404
 
+        # Call file storage method
+        success_message = {'messageId' : cap_id}
+
+        return jsonify(success_message), 200
+    except Exception as e:
+        return e.message, 500
 
 @app.errorhandler(500)
 def server_error(err):
