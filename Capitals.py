@@ -66,7 +66,9 @@ class Capitals(object):
     def get_capital(self, capital_id):
         """Get capital capital_id from datastore"""
         query = self.ds.query(kind=self.kind)
-        query.add_filter('name', '=', capital_id)
+        query.add_filter('id', '=', capital_id)
+        # key = self.ds.key(self.kind, capital_id)
+        # query.key_filter(key, '=')
         return self.get_query_results(query)
 
     def publish_message(self, topic_name, data):

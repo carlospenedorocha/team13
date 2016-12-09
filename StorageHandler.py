@@ -37,7 +37,7 @@ class StorageHandler:
         if bucket_exists is not None and not bucket_exists:
             self.create_bucket(bucket_name)
 
-        self.store_file_to_gcs(bucket_name, str(capital_id) + ".json", item)
+        self.store_file_to_gcs(bucket_name, str(capital_id), item)
         return True
 
     def create_bucket(self, bucket_name):
