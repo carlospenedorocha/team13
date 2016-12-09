@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<title>World Capitals</title>
+<center>
+    <h1>Details regarding the Captial cities of the World</h1>
+</center>
+<HR>
+{% if results %}
+    {% for result in results %}
+        <B>{{ result.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</B>
+        <BR> {{ result.comment }} <BR>
+    {% endfor %}
+{% endif %}
+<BR><BR>
+<form action="/" method="post">
+    <p>
+        Please sign:
+        <input name="comment">
+        <br>
+    </p>
+    <p><input type="submit" value="Submit"></p>
+</form>
