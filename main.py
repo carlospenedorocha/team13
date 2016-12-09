@@ -4,21 +4,25 @@ import logging
 import json
 import base64
 
-from flask import Flask, request
+from flask import Flask, request, Blueprint, render_template, redirect, url_for
 from flask import jsonify
 
 import Capitals
 import utility
 import StorageHandler
+import CapitalGui
 
 
 app = Flask(__name__)
-
+api = Blueprint('capitals', __name__)
 
 @app.route('/')
 def default():
-    """Capital Idea!"""
-    return 'Capital Idea!'
+    """Basic HTML page"""
+    capital = CapitalGui.CapitalGui()
+    results = capital.fetch_capitals()
+    if request.method == 'GET':
+        return render_template('CapitalGui.html', comment=None, results=results)
 
 @app.route('/api/status', methods=['GET'])
 def status():
