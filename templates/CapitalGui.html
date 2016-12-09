@@ -5,12 +5,21 @@
 </center>
 <HR>
 {% if results %}
+    <center>
+        <table border=1>
+            <tr>
+                <th>Country</th>
+                <th>Capital</th>
+            </tr>
     {% for result in results %}
-        <B>{{ result.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</B>
-        <BR> {{ result.comment }} <BR>
+        <tr>
+            <td>{{ result.country }}</td>
+            <td>{{ result.name }}</td>
+        </tr>
     {% endfor %}
 {% endif %}
 <BR><BR>
+<!--
 <form action="/" method="post">
     <p>
         Please sign:
@@ -19,3 +28,4 @@
     </p>
     <p><input type="submit" value="Submit"></p>
 </form>
+-->
