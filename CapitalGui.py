@@ -20,7 +20,7 @@ class CapitalGui:
 
     def fetch_capitals(self):
         capital = Capitals.Capitals()
-        return capital.fetch_capitals()
+        return capital.fetch_unique_capitals()
 
     def get_query_results(self, query):
         results = list()

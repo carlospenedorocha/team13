@@ -28,9 +28,19 @@ class Capitals(object):
         query.order = ['id']
         return self.get_query_results(query)
 
-    def get_query_results(self, query):
+    def fetch_unique_capitals(self):
+        query = self.ds.query(kind=self.kind)
+        # query.order = ['country']
+        query.order = ['name']
+        # query.order = ['country', 'name']
+        # query.distinct_on = ['country']
+        query.distinct_on = ['name']
+        # query.distinct_on = ['country', 'name']
+        return self.get_query_results(query)
+
+    def get_query_results(self, query, limit=20):
         results = list()
-        for entity in list(query.fetch(limit=20)):
+        for entity in list(query.fetch(limit)):
             results.append(dict(entity))
         return results
 
